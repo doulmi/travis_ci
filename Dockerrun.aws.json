@@ -1,0 +1,36 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "client",
+      "image": "fengyu/multi-client",
+      "hostname": "client",
+      "essential": false
+    },
+    {
+      "name": "server",
+      "image": "fengyu/multi-server",
+      "hostname": "api",
+      "essential": false
+    },
+    {
+      "name": "nginx",
+      "image": "fengyu/multi-nginx",
+      "hostname": "nginx",
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort":80
+        }
+      ],
+      "links": ["client", "server"]
+    },
+    {
+      "name": "worker",
+      "image": "fengyu/multi-worker",
+      "hostname": "worker",
+      "essential": false
+    }
+  ]
+}
