@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t fengyu/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run fengyu/react-test yarn test -- --coverage
+
+after_success:
+  - docker build -t fengyu/multi-client ./client
+  - docker build -t fengyu/multi-server ./server
+  - docker build -t fengyu/multi-nginx ./nginx
+  - docker build -t fengyu/multi-worker ./worker
+  # Log in to the docker hub
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push fengyu/multi-client
+  - docker push fengyu/multi-server
+  - docker push fengyu/multi-nginx
+  - docker push fengyu/multi-worker

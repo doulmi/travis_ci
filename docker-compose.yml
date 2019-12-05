@@ -48,7 +48,7 @@ services:
       - PGUSER=user
       - PGPASSWORD=user
       - PGDATABASE=fib
-      - redisHost=redis
+      - REDIS_HOST=redis
     depends_on:
       - postgres
       - redis
